@@ -1,4 +1,4 @@
-package landingPage;
+package base;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -11,11 +11,14 @@ import org.openqa.selenium.Dimension;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
+import org.testng.annotations.AfterSuite;
+
 import java.time.Duration;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeSuite;
@@ -27,13 +30,13 @@ import com.aventstack.extentreports.reporter.ExtentSparkReporter;
 public class Baseclass {
 
 	protected WebDriver driver;
-	
+	protected static Properties prop;
 	public static ExtentReports extent;
     public static ExtentTest test;
 
     @BeforeSuite
-    public void setupReport() {
-        String path = System.getProperty("user.dir") + "/reports/index.html";
+    public void setupReport() throws IOException {
+    	  String path = System.getProperty("user.dir") + "/reports/index.html";
         ExtentSparkReporter reporter = new ExtentSparkReporter(path);
         reporter.config().setReportName("Astrojini Automation Report");
         reporter.config().setDocumentTitle("Test Report");
@@ -41,6 +44,7 @@ public class Baseclass {
         extent = new ExtentReports();
         extent.attachReporter(reporter);
         extent.setSystemInfo("QA Engineer", "Suyash");
+      
     }
 	
 	
@@ -49,34 +53,37 @@ public class Baseclass {
 	
 	@BeforeMethod
 	public void setup() throws IOException {
-		
-	     test = extent.createTest("Login Test");
-		Properties prop = new Properties();
-		FileInputStream file = new FileInputStream("C:\\Users\\Suyash\\eclipse-workspace\\Astrojini\\src\\test\\java\\resourse\\Global.properties");
-		prop.load(file);
+		  prop = new Properties();
+	        FileInputStream file = new FileInputStream("C:\\Users\\Suyash\\eclipse-workspace\\Astrojini\\src\\test\\java\\resourse\\Global.properties");
+	        prop.load(file);
 	    if(prop.getProperty("browser").equals("chrome")) {
-	    ChromeOptions options = new ChromeOptions();	
-	    options.addArguments("headless");
-	    driver = new ChromeDriver(options);
+	   // ChromeOptions options = new ChromeOptions();	
+	  //  options.addArguments("headless");
+	    driver = new ChromeDriver();
 	    driver.manage().window().setSize(new Dimension(1440,900));
-	    getLoginPage();
+        
 	    }
 	    else if(prop.getProperty("browser").equals("edge")) {
 	    	System.setProperty("webdriver.edge.driver", "C:\\Users\\Suyash\\eclipse-workspace\\Astrojini\\src\\test\\java\\resourse\\msedgedriver.exe");
 	    	driver = new ChromeDriver();
 	    	driver.manage().window().maximize();
-	    	getLoginPage();
+	    
 	    }
-	    else if(prop.getProperty("browser").equals("firefox)")){
+	    else if(prop.getProperty("browser").equals("firefox")){
 	    	System.setProperty("webdriver.gecko.driver", "C:\\Users\\Suyash\\eclipse-workspace\\Astrojini\\src\\test\\java\\resourse\\geckodriver.exe");
 	    	
 	    }
 	
 }
-	public  void getLoginPage() {
-		
-		driver.get("https://www.astrojini.com/login");
-   }
+	public String navigateTo(String key) {
+	    String url = prop.getProperty(key); 
+	    if (url == null) {
+	        throw new RuntimeException("Missing key: " + key + " in Global.properties");
+	    }
+	    driver.get(url);
+	    return url;
+	}
+
 	
 	public String getmessage(By locator , int timeout) {
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(timeout));
@@ -92,27 +99,27 @@ public class Baseclass {
 		return destination.getAbsolutePath();
 		
 	}
+	public void waitForVisibility(WebElement element, int timeoutInSeconds) {
+	    new WebDriverWait(driver, Duration.ofSeconds(timeoutInSeconds))
+	        .until(ExpectedConditions.visibilityOf(element));
+	}
+
 	
 	
 	
 	
-    @AfterMethod
-    public void tearDown(ITestResult result) throws IOException {
-		
-		
-		// Capture screenshot if the test fails
-    	 if (result.getStatus() == ITestResult.FAILURE) {
-    	        String screenshotPath = getScreenshot(result.getName());
-    	        test.fail("Test Failed: " + result.getThrowable());
-    	        test.addScreenCaptureFromPath(screenshotPath);
-    	    }
-        if (driver != null) {
-            driver.quit();
-        }
-        if (extent != null) {
-			extent.flush();
-		}
-    }
-	
-	
+	@AfterMethod
+	public void tearDown(ITestResult result) {
+	    if (driver != null) {
+	        try {
+	            if (ITestResult.FAILURE == result.getStatus()) {
+	                getScreenshot(result.getName()); // 👈 This line is throwing exception if driver is already dead
+	            }
+	        } catch (Exception e) {
+	            System.out.println("Screenshot capture failed: " + e.getMessage());
+	        }
+	        driver.quit(); // make sure this is not called twice
+	    }
+	}
 }
+

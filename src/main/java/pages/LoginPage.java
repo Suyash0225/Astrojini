@@ -1,9 +1,9 @@
-package ui;
+package pages;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-import landingPage.Baseclass;
+import base.Baseclass;
 
 public class LoginPage extends Baseclass {
 
@@ -14,7 +14,6 @@ public class LoginPage extends Baseclass {
 	private By errorMessage = By.className("swal2-title");
 	
 	public LoginPage(WebDriver driver) {
-		super();
 		this.driver = driver;
 	}
 	
@@ -36,7 +35,7 @@ public class LoginPage extends Baseclass {
 		entername(user);
 		enterPassword(pass);
 		clickLoginButton();
-		getAlertMessage();
+		//getAlertMessage();
 	}
 	
 

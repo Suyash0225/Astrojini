@@ -19,7 +19,7 @@ public class EditProfileTest extends Baseclass {
 	public void gotoLoginPage() {
 		driver.get(navigateTo("login_url"));
 		LoginPage obj = new LoginPage(driver);
-		obj.login("suyashsrivastava49@gmail.com","Suyash@0225");
+		obj.login("kwikclean0225@gmail.com","Suyash@0225");
 		// After login
 		new WebDriverWait(driver, Duration.ofSeconds(10))
 	    .until(ExpectedConditions.visibilityOfElementLocated(

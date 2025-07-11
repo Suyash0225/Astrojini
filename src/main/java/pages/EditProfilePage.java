@@ -8,6 +8,7 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.Select;
 
 import base.Baseclass;
+import utils.WaitUtils;
 
 public class EditProfilePage extends Baseclass {
 	
@@ -31,11 +32,11 @@ public class EditProfilePage extends Baseclass {
 	@FindBy(css=".as_btn.btn_bnr[type='submit']") WebElement userUpdate;
 	
 	public void clickeditprofile() { 
-		waitForVisibility(edit,10);
+		WaitUtils.waitForVisibility(driver, edit,10);
 		edit.click();}
 	
 	public void uploadProfilePicture( String filePath) {
-		waitForVisibility(edit,10);
+		WaitUtils.waitForVisibility(driver, edit,10);
 		((JavascriptExecutor) driver).executeScript("arguments[0].removeAttribute('hidden')", userPic);
 		   
 		userPic.sendKeys(filePath);

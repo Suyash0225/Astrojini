@@ -1,7 +1,7 @@
 # 💻 ASTROJINI UI & API Test Automation
 
 Automated end-to-end test suite for the **Astrojini.com** astrology web platform by **Suyash Srivastava**.
-This framework validates user flows such as **Login**, **Logout**, **Kundli Milan**, and **Rashifal Check**, using Selenium, RestAssured, TestNG, and Cucumber BDD.
+This framework validates user flows such as **Login**, **Logout**, **Edit Profile**, and **Rashifal Check**, using Selenium, TestNG, POM, RestAssured.
 
 The framework includes **HTML reporting**, **screenshot capturing**, and planned **CI/CD integration with GitHub Actions**.
 
@@ -15,12 +15,10 @@ The framework includes **HTML reporting**, **screenshot capturing**, and planned
 | Selenium WebDriver | Browser automation            |
 | RestAssured        | API Testing                   |
 | TestNG             | Test runner & assertions      |
-| Cucumber           | BDD + Gherkin syntax          |
 | Maven              | Dependency + Build Management |
 | WebDriverManager   | Auto driver setup             |
 | GitHub Actions     | CI/CD integration             |
 | Page Object Model  | Clean code structure          |
-| Apache POI         | (Optional) Excel integration  |
 | ExtentReports      | HTML Reporting                |
 
 ---
@@ -36,12 +34,10 @@ astrojini-automation/
 │   │   └── base/                  # BaseTest classes
 │   └── test/java
 │       ├── ui/                   # Selenium test cases
-│       ├── api/                  # RestAssured test cases
-│       └── stepdefinitions/      # Cucumber step defs
-├── features/                     # Gherkin feature files
+│       ├── resource              # properties file
+│       └── screenshots           # Cucumber step defs                     
 ├── testng.xml                    # TestNG suite file
 ├── pom.xml                       # Maven config
-├── config.properties             # Environment configs
 └── README.md                     # Project info
 ```
 
@@ -49,14 +45,14 @@ astrojini-automation/
 
 ## 🧪 Test Coverage
 
-| Test Case Description               | Tags      | Result |
-| ----------------------------------- | --------- | ------ |
-| Login with valid credentials        | @Login    | ✅ Pass |
-| Login with invalid credentials      | @Login    | ✅ Pass |
-| Logout from dashboard               | @Logout   | ✅ Pass |
-| Match Kundli for valid DOB          | @Kundli   | ✅ Pass |
-| Rashifal check for all zodiac signs | @Rashifal | ✅ Pass |
-| API: Get daily rashifal JSON        | @API      | ✅ Pass |
+| Test Case Description               | Tags            | Result   |
+| ----------------------------------- | ---------       | -------  |
+| Login with valid credentials        | @Login          | ✅ Pass |
+| Login with invalid credentials      | @Login          | ✅ Pass |
+| Register with valid & invalid       | @Registration   | ✅ Pass |
+| Edit Profile                        | @EditProfile    | ✅ Pass |
+| Rashifal check for all zodiac signs | @Rashifal       | ✅ Pass |
+| API: Get daily rashifal JSON        | @API            | ✅ Pass |
 
 ---
 
@@ -77,16 +73,6 @@ Smart waits, element clickers, screenshot capture, and reusable logic are abstra
 ### 🖼️ Screenshot on Failure
 
 Screenshots are captured on every test failure and embedded into the final HTML report.
-
-### 📈 Reporting
-
-Uses ExtentReports or Cucumber HTML Reporter.
-
-| Format | Location                                      |
-| ------ | --------------------------------------------- |
-| HTML   | `target/CucumberReports/cucumber-report.html` |
-| JSON   | `target/CucumberReports/report.json`          |
-| JUnit  | `target/CucumberReports/junit.xml`            |
 
 ### ⚙️ CI Integration (Planned)
 
@@ -115,9 +101,8 @@ mvn clean test
 
 **Suyash Srivastava**
 QA Automation Engineer
-📧 [suyashsrivastava@email.com](mailto:suyashsrivastava@email.com) *(placeholder)*
-🔗 [GitHub](https://github.com/Suyash0225)
+📧 Gmail =  suyashsrivastava49@gmail.com
+🔗 GitHub = https://github.com/Suyash0225
 
 ---
 
-Ready to automate the cosmos ✨

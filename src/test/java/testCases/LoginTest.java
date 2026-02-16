@@ -24,7 +24,7 @@ public class LoginTest extends Baseclass {
     @DataProvider
     public Object[][] loginData() {
         return new Object[][] {
-            {"kwikclean0225@gmail.com", "Suyash@0225", "Customer login successfully !!"}, // valid
+            {"kwikclean0225@gmail.com", "Suyash@025", "Customer login successfully !!"}, // valid
             {"wronguser@gmail.com", "wrongpass", "Invalid Credentials !!"}, // invalid
         };
     }
